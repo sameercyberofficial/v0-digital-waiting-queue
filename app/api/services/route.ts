@@ -12,11 +12,10 @@ export async function GET(request: Request) {
     }
 
     const services = await sql`
-      SELECT s.id, s.name, s.description, s.estimated_duration
-      FROM services s
-      JOIN branch_services bs ON s.id = bs.service_id
-      WHERE bs.branch_id = ${branchId} AND s.status = 'active'
-      ORDER BY s.name
+      SELECT id, name, description, estimated_duration
+      FROM services
+      WHERE branch_id = ${branchId} AND is_active = true
+      ORDER BY name
     `
 
     return Response.json(services)

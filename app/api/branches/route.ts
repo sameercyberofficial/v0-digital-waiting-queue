@@ -5,9 +5,9 @@ const sql = neon(process.env.DATABASE_URL!)
 export async function GET() {
   try {
     const branches = await sql`
-      SELECT id, name, address, phone, status
+      SELECT id, name, address, phone, is_active
       FROM branches 
-      WHERE status = 'active'
+      WHERE is_active = true
       ORDER BY name
     `
 

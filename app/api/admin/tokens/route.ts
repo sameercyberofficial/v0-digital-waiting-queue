@@ -7,24 +7,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get("status")
 
-    const query = `
-      SELECT 
-        t.id,
-        t.token_number,
-        t.customer_name,
-        t.customer_phone,
-        t.status,
-        t.estimated_wait_time,
-        t.position_in_queue,
-        t.created_at,
-        t.counter_id,
-        s.name as service_name,
-        c.name as counter_name
-      FROM tokens t
-      JOIN services s ON t.service_id = s.id
-      LEFT JOIN counters c ON t.counter_id = c.id
-    `
-
     let tokens
     if (status && status !== "all") {
       tokens = await sql`
@@ -35,11 +17,11 @@ export async function GET(request: Request) {
           t.customer_phone,
           t.status,
           t.estimated_wait_time,
-          t.position_in_queue,
           t.created_at,
           t.counter_id,
           s.name as service_name,
-          c.name as counter_name
+          c.name as counter_name,
+          ROW_NUMBER() OVER (PARTITION BY t.service_id ORDER BY t.created_at) as position_in_queue
         FROM tokens t
         JOIN services s ON t.service_id = s.id
         LEFT JOIN counters c ON t.counter_id = c.id
@@ -55,11 +37,11 @@ export async function GET(request: Request) {
           t.customer_phone,
           t.status,
           t.estimated_wait_time,
-          t.position_in_queue,
           t.created_at,
           t.counter_id,
           s.name as service_name,
-          c.name as counter_name
+          c.name as counter_name,
+          ROW_NUMBER() OVER (PARTITION BY t.service_id ORDER BY t.created_at) as position_in_queue
         FROM tokens t
         JOIN services s ON t.service_id = s.id
         LEFT JOIN counters c ON t.counter_id = c.id

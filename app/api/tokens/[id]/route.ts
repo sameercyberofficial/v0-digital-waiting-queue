@@ -14,7 +14,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         t.customer_name,
         t.customer_phone,
         t.estimated_wait_time,
-        t.position_in_queue,
+        ROW_NUMBER() OVER (PARTITION BY t.service_id ORDER BY t.created_at) as position_in_queue,
         t.created_at,
         b.name as branch_name,
         s.name as service_name

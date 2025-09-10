@@ -12,12 +12,12 @@ export async function POST(request: Request) {
 
     // Simple demo authentication - in production, use proper password hashing
     if (username === "admin" && password === "admin123") {
-      // Get admin user info from staff table
       const staff = await sql`
-        SELECT s.id, s.name, s.role, b.name as branch_name
+        SELECT s.id, u.name, s.role, b.name as branch_name
         FROM staff s
         JOIN branches b ON s.branch_id = b.id
-        WHERE s.role = 'admin' AND s.status = 'active'
+        LEFT JOIN neon_auth.users_sync u ON s.user_id = u.id
+        WHERE s.role = 'admin' AND s.is_active = true
         LIMIT 1
       `
 
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         token,
         user: {
           id: user.id,
-          name: user.name,
+          name: user.name || "Admin User",
           role: user.role,
           branch_name: user.branch_name,
         },

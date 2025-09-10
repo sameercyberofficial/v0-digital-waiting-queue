@@ -15,13 +15,13 @@ export async function GET(request: Request) {
           t.token_number,
           t.customer_name,
           t.estimated_wait_time,
-          t.position_in_queue,
+          ROW_NUMBER() OVER (PARTITION BY t.service_id ORDER BY t.created_at) as position_in_queue,
           s.name as service_name
         FROM tokens t
         JOIN services s ON t.service_id = s.id
         WHERE t.status = 'waiting' 
         AND t.branch_id = ${branchId}
-        ORDER BY t.position_in_queue ASC, t.created_at ASC
+        ORDER BY t.created_at ASC
         LIMIT 20
       `
     } else {
@@ -31,12 +31,12 @@ export async function GET(request: Request) {
           t.token_number,
           t.customer_name,
           t.estimated_wait_time,
-          t.position_in_queue,
+          ROW_NUMBER() OVER (PARTITION BY t.service_id ORDER BY t.created_at) as position_in_queue,
           s.name as service_name
         FROM tokens t
         JOIN services s ON t.service_id = s.id
         WHERE t.status = 'waiting'
-        ORDER BY t.position_in_queue ASC, t.created_at ASC
+        ORDER BY t.created_at ASC
         LIMIT 20
       `
     }

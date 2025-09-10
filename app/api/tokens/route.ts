@@ -10,9 +10,9 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    // Get the service prefix for token generation
+    // Get the service details for token generation
     const service = await sql`
-      SELECT prefix FROM services WHERE id = ${serviceId}
+      SELECT name FROM services WHERE id = ${serviceId}
     `
 
     if (service.length === 0) {
@@ -30,13 +30,16 @@ export async function POST(request: Request) {
       LIMIT 1
     `
 
+    // Create prefix from service name (first 2 letters)
+    const servicePrefix = service[0].name.substring(0, 2).toUpperCase()
+
     let nextNumber = 1
     if (lastToken.length > 0) {
-      const lastNumber = Number.parseInt(lastToken[0].token_number.replace(service[0].prefix, ""))
+      const lastNumber = Number.parseInt(lastToken[0].token_number.replace(servicePrefix, ""))
       nextNumber = lastNumber + 1
     }
 
-    const tokenNumber = `${service[0].prefix}${nextNumber.toString().padStart(3, "0")}`
+    const tokenNumber = `${servicePrefix}${nextNumber.toString().padStart(3, "0")}`
 
     // Calculate estimated wait time (simplified)
     const queueCount = await sql`
@@ -56,12 +59,12 @@ export async function POST(request: Request) {
     const newToken = await sql`
       INSERT INTO tokens (
         token_number, branch_id, service_id, customer_name, 
-        customer_phone, status, estimated_wait_time, position_in_queue
+        customer_phone, status, estimated_wait_time
       ) VALUES (
         ${tokenNumber}, ${branchId}, ${serviceId}, ${customerName},
-        ${customerPhone}, 'waiting', ${estimatedWaitTime}, ${queueCount[0].count + 1}
+        ${customerPhone}, 'waiting', ${estimatedWaitTime}
       )
-      RETURNING id, token_number, status, estimated_wait_time, position_in_queue
+      RETURNING id, token_number, status, estimated_wait_time
     `
 
     return Response.json(newToken[0])
