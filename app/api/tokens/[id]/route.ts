@@ -6,6 +6,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
   try {
     const tokenId = params.id
 
+    const parsedId = Number.parseInt(tokenId)
+    if (isNaN(parsedId)) {
+      return Response.json({ error: "Invalid token ID format" }, { status: 400 })
+    }
+
     const token = await sql`
       SELECT 
         t.id,
@@ -21,7 +26,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       FROM tokens t
       JOIN branches b ON t.branch_id = b.id
       JOIN services s ON t.service_id = s.id
-      WHERE t.id = ${tokenId}
+      WHERE t.id = ${parsedId}
     `
 
     if (token.length === 0) {
