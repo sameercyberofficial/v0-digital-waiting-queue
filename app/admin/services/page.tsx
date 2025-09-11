@@ -18,7 +18,7 @@ interface Service {
   description: string
   prefix: string
   estimated_duration: number
-  status: string
+  is_active: boolean
   created_at: string
 }
 
@@ -78,8 +78,8 @@ export default function ServiceManagement() {
     }
   }
 
-  const toggleServiceStatus = async (serviceId: number, currentStatus: string) => {
-    const newStatus = currentStatus === "active" ? "inactive" : "active"
+  const toggleServiceStatus = async (serviceId: number, currentStatus: boolean) => {
+    const newStatus = !currentStatus
 
     try {
       const response = await fetch(`/api/admin/services/${serviceId}`, {
@@ -87,7 +87,7 @@ export default function ServiceManagement() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ is_active: newStatus }),
       })
 
       if (response.ok) {
@@ -131,8 +131,12 @@ export default function ServiceManagement() {
     setShowAddForm(true)
   }
 
-  const getStatusColor = (status: string) => {
-    return status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+  const getStatusColor = (isActive: boolean) => {
+    return isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+  }
+
+  const getStatusText = (isActive: boolean) => {
+    return isActive ? "ACTIVE" : "INACTIVE"
   }
 
   return (
@@ -252,16 +256,19 @@ export default function ServiceManagement() {
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <Badge className={getStatusColor(service.status)}>{service.status.toUpperCase()}</Badge>
+                    <Badge className={getStatusColor(service.is_active)}>
+                      {getStatusText(service.is_active)}
+                    </Badge>
+
                     <div className="flex space-x-2">
                       <Button onClick={() => startEdit(service)} size="sm" variant="outline">
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button
-                        onClick={() => toggleServiceStatus(service.id, service.status)}
+                        onClick={() => toggleServiceStatus(service.id, service.is_active)}
                         size="sm"
                         variant="outline"
-                        className={service.status === "active" ? "text-red-600" : "text-green-600"}
+                        className={service.is_active ? "text-red-600" : "text-green-600"}
                       >
                         <Settings className="h-4 w-4" />
                       </Button>
@@ -277,6 +284,7 @@ export default function ServiceManagement() {
                   </div>
                 </div>
               ))}
+
               {services.length === 0 && (
                 <div className="text-center py-8 text-gray-500">
                   <p>No services found. Add your first service to get started.</p>
