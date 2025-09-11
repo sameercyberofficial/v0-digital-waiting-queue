@@ -17,13 +17,12 @@ export async function GET() {
       WHERE DATE(created_at) = ${today}
     `
 
-    // Get active branches and staff
     const branchStats = await sql`
-      SELECT COUNT(*) as active_branches FROM branches WHERE status = 'active'
+      SELECT COUNT(*) as active_branches FROM branches WHERE is_active = true
     `
 
     const staffStats = await sql`
-      SELECT COUNT(*) as active_staff FROM staff WHERE status = 'active'
+      SELECT COUNT(*) as active_staff FROM staff WHERE is_active = true
     `
 
     return Response.json({

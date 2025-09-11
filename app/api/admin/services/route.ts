@@ -5,7 +5,7 @@ const sql = neon(process.env.DATABASE_URL!)
 export async function GET() {
   try {
     const services = await sql`
-      SELECT id, name, description, prefix, estimated_duration, status, created_at
+      SELECT id, name, description, estimated_duration, is_active, created_at
       FROM services
       ORDER BY created_at DESC
     `
@@ -19,16 +19,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { name, description, prefix, estimated_duration } = await request.json()
+    const { name, description, estimated_duration } = await request.json()
 
-    if (!name || !prefix || !estimated_duration) {
+    if (!name || !estimated_duration) {
       return Response.json({ error: "Missing required fields" }, { status: 400 })
     }
 
     const newService = await sql`
-      INSERT INTO services (name, description, prefix, estimated_duration, status)
-      VALUES (${name}, ${description}, ${prefix.toUpperCase()}, ${estimated_duration}, 'active')
-      RETURNING id, name, description, prefix, estimated_duration, status
+      INSERT INTO services (name, description, estimated_duration, is_active, branch_id)
+      VALUES (${name}, ${description}, ${estimated_duration}, true, 1)
+      RETURNING id, name, description, estimated_duration, is_active
     `
 
     return Response.json(newService[0])

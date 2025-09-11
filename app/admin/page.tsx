@@ -2,11 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Shield, ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export default function AdminLogin() {
@@ -52,53 +47,66 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-6">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Home</span>
+            <span>← Back to Home</span>
           </Link>
-          <Shield className="h-16 w-16 mx-auto mb-4 text-slate-600" />
+          <div className="text-6xl mb-4">🛡️</div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Portal</h1>
           <p className="text-gray-600">Sign in to access the admin dashboard</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Admin Login</CardTitle>
-            <CardDescription>Enter your admin credentials to continue</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-2">Admin Login</h2>
+            <p className="text-gray-600 text-sm">Enter your admin credentials to continue</p>
+          </div>
+
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="username">Username</Label>
-              <Input
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                Username
+              </label>
+              <input
                 id="username"
                 type="text"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <input
                 id="password"
                 type="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleLogin()}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
-            <Button onClick={handleLogin} className="w-full" disabled={isLoading || !username || !password}>
+            <button
+              onClick={handleLogin}
+              disabled={isLoading || !username || !password}
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
               {isLoading ? "Signing in..." : "Sign In"}
-            </Button>
+            </button>
 
-            <div className="text-center text-sm text-gray-500 mt-4">
-              <p>Demo credentials:</p>
-              <p>Username: admin | Password: admin123</p>
+            <div className="text-center text-sm text-gray-500 mt-4 p-3 bg-gray-50 rounded-md">
+              <p className="font-medium">Demo credentials:</p>
+              <p>
+                Username: <span className="font-mono">admin</span> | Password:{" "}
+                <span className="font-mono">admin123</span>
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   )

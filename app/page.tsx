@@ -1,7 +1,4 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Clock, Users, Monitor, BarChart3 } from "lucide-react"
 
 export default function HomePage() {
   return (
@@ -11,7 +8,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <Clock className="h-8 w-8 text-blue-600" />
+              <div className="text-2xl">⏰</div>
               <h1 className="text-xl font-bold text-gray-900">QueueFlow</h1>
             </div>
             <nav className="flex space-x-4">
@@ -32,10 +29,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4 text-balance">
-            Digital Waiting Queue Management System
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-pretty">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Digital Waiting Queue Management System</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Streamline your service operations with our comprehensive queue management solution. Reduce wait times,
             improve customer satisfaction, and optimize staff efficiency.
           </p>
@@ -43,61 +38,61 @@ export default function HomePage() {
 
         {/* Feature Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Users className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-              <CardTitle>Customer Portal</CardTitle>
-              <CardDescription>Book tokens, track queue status, and receive notifications</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/customer">
-                <Button className="w-full">Access Portal</Button>
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-center">
+              <div className="text-4xl mb-4">👥</div>
+              <h3 className="text-lg font-semibold mb-2">Customer Portal</h3>
+              <p className="text-gray-600 text-sm mb-4">Book tokens, track queue status, and receive notifications</p>
+              <Link
+                href="/customer"
+                className="inline-block w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors text-center"
+              >
+                Access Portal
               </Link>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <BarChart3 className="h-12 w-12 text-green-600 mx-auto mb-2" />
-              <CardTitle>Admin Dashboard</CardTitle>
-              <CardDescription>Manage queues, staff, and view comprehensive analytics</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/admin">
-                <Button className="w-full bg-transparent" variant="outline">
-                  Admin Login
-                </Button>
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-center">
+              <div className="text-4xl mb-4">📊</div>
+              <h3 className="text-lg font-semibold mb-2">Admin Dashboard</h3>
+              <p className="text-gray-600 text-sm mb-4">Manage queues, staff, and view comprehensive analytics</p>
+              <Link
+                href="/admin"
+                className="inline-block w-full border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 transition-colors text-center"
+              >
+                Admin Login
               </Link>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Monitor className="h-12 w-12 text-purple-600 mx-auto mb-2" />
-              <CardTitle>Public Display</CardTitle>
-              <CardDescription>Real-time queue status for waiting areas and lobbies</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/display">
-                <Button className="w-full bg-transparent" variant="outline">
-                  View Display
-                </Button>
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-center">
+              <div className="text-4xl mb-4">🖥️</div>
+              <h3 className="text-lg font-semibold mb-2">Public Display</h3>
+              <p className="text-gray-600 text-sm mb-4">Real-time queue status for waiting areas and lobbies</p>
+              <Link
+                href="/display"
+                className="inline-block w-full border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 transition-colors text-center"
+              >
+                View Display
               </Link>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Clock className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-              <CardTitle>Real-time Updates</CardTitle>
-              <CardDescription>Live queue status, notifications, and wait time estimates</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full bg-transparent" variant="outline" disabled>
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-center">
+              <div className="text-4xl mb-4">🔄</div>
+              <h3 className="text-lg font-semibold mb-2">Real-time Updates</h3>
+              <p className="text-gray-600 text-sm mb-4">Live queue status, notifications, and wait time estimates</p>
+              <Link
+                href="/updates"
+                className="inline-block w-full border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 transition-colors text-center"
+              >
                 Live Updates
-              </Button>
-            </CardContent>
-          </Card>
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* Features List */}
@@ -146,6 +141,25 @@ export default function HomePage() {
                 <p className="text-gray-600 text-sm">SMS, email, and push notifications</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Quick Start Section */}
+        <div className="mt-12 text-center">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Get Started</h3>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/customer"
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              🎫 Get a Token
+            </Link>
+            <Link
+              href="/updates"
+              className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors"
+            >
+              📱 Check Queue Status
+            </Link>
           </div>
         </div>
       </main>
